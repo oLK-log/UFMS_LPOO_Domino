@@ -10,11 +10,13 @@ public class ControleJogo {
 	private List<Participante> jogadores;
 	private List<Peca> monte;
 	private Mesa mesa;
+	private Scanner input;
 	
 	public ControleJogo() {
 		this.jogadores = new ArrayList<>();
 		this.monte = new ArrayList<>();
 		this.mesa = new Mesa();
+		this.input = new Scanner(System.in);
 	}
 	
 	public void configurarJogo() {
@@ -66,35 +68,96 @@ public class ControleJogo {
 			System.out.println("Mesa: "+ mesa);
 			System.out.println("\n==================================================================================");
 			System.out.println("Vez do: " + jogadorAtual.getNome());
-			System.out.println("Suas peças:[lado1-Lado2] " + jogadorAtual.getMao());
-			boolean jogou = false;
+			mostrarMao(jogadorAtual);
+			menuEscolha();
+			System.out.println("Digite a opção escolhida:");
+			int op = lerOpcao();
 			
-			for(int i=0; i<jogadorAtual.getMao().size(); i++) {
-				Peca pecaTentaJogar = jogadorAtual.getMao().get(i);
-				try {
-					System.out.println("Tentando jogar a peca: "+ pecaTentaJogar);
-					jogadorAtual.jogarPeca(mesa, pecaTentaJogar);
-					System.out.println("Jogada Feita! usou a peça "+pecaTentaJogar);
-					jogou=true;
+			switch(op) {
+			//comprar
+			case 1:
+				if(!monte.isEmpty()) {
+					Peca nova = monte.remove(0);
+					jogadorAtual.adicionarPeca(nova);
+					System.out.println("Você comprou a peça "+ nova);
+				}else {
+					System.out.println("Não foi possível comprar Peças- Monte vazio");
+				}
+				break;
+			
+			//jogar
+			case 2:
+				System.out.println("Digite o número da peça que deseja usar:");
+				int indicePeca = lerOpcao();
+				
+				if(indicePeca >= 0 && indicePeca < jogadorAtual.getMao().size()) {
+					Peca pecaEscolhida = jogadorAtual.getMao().get(indicePeca);
+					try {
+						jogadorAtual.jogarPeca(mesa, pecaEscolhida);
+						System.out.println("Jogada Feita!");
+						
+						if(jogadorAtual.getMao().isEmpty()) {
+							System.out.println("O jogador "+ jogadorAtual.getNome()+" venceu!!!");
+							jogoAcabou = true;
+						} else {
+							indiceJogadorAtual = (indiceJogadorAtual + 1) % jogadores.size();
+						}
+					} catch(JogadaInvalidaException e) {
+						System.out.println("Jogada Inválida - "+ e.getMessage());
+					} catch(Exception e) {
+						System.out.println("Erro: "+ e.getMessage());
+					}
+				}
 					break;
-				} catch(JogadaInvalidaException e) {
-					System.out.println("Erro crítico: "+ e.getMessage());
-				} catch(Exception e) {
-                    System.out.println("Erro genérico: " + e.getMessage());
-                }
-			}
 			
-			if(!jogou) {
-				System.out.println("Jogador "+jogadorAtual.getNome() + " passou a vez");
-			}
+			//Passar a vez
+			case 3:
+				if(monte.isEmpty()) {
+					System.out.println(jogadorAtual.getNome()+" passou a vez.");
+					indiceJogadorAtual = (indiceJogadorAtual +1) % jogadores.size();
+				} else {
+					System.out.println("Ainda tem peças no monte! Compre ou Jogue antes de passar...");
+				}
+				break;
+			default:
+				System.out.println("Opção inválida!");
+				break;
 			
-			if(jogadorAtual.getMao().isEmpty()) {
-				System.out.println("Jogador "+ jogadorAtual.getNome()+" Venceu!!");
-				jogoAcabou = true;
-			} else {
-				indiceJogadorAtual = (indiceJogadorAtual + 1) % jogadores.size();
 			}
 		}
 		System.out.println("Fim do Jogo!");
+	}
+	
+	private void mostrarMao(Participante p) {
+		List<Peca> mao = p.getMao();
+		System.out.println("Suas pecas");
+		
+		for(Peca peca:mao) {
+			System.out.print(peca + "  "); 
+		}
+		System.out.println();
+		for(int i=0; i<mao.size(); i++) {
+			System.out.print("  " + i + "    "); 
+		}
+		System.out.println("\n");
+		
+	}
+	
+	private void menuEscolha() {
+		System.out.println("Escolha uma opção:");
+		System.out.println("[1] - Comprar Peça");
+		System.out.println("[2] - Jogar Peça");
+		System.out.println("[3] - Passar a vez");
+	}
+	
+	private int lerOpcao() {
+		while(true) {
+			try {
+				String linha = input.nextLine();
+				return Integer.parseInt(linha);
+			} catch(NumberFormatException e) {
+				System.out.println("Entrada inválida! Digite um valor numérico:");
+			}
+		}
 	}
 }
