@@ -60,7 +60,7 @@ public class ControleJogo {
 		System.out.println("---------------------------------Iniciando partida!-------------------------------");
 		//a partida vai iniciar pelo jogador 1
 		boolean jogoAcabou = false;
-		int indiceJogadorAtual = 0;
+		int indiceJogadorAtual = definePrimeiraJogada();
 		
 		while(!jogoAcabou) {
 			Participante jogadorAtual = jogadores.get(indiceJogadorAtual);
@@ -159,5 +159,25 @@ public class ControleJogo {
 				System.out.println("Entrada inválida! Digite um valor numérico:");
 			}
 		}
+	}
+	
+	private int definePrimeiraJogada() {
+		for(int bucha = 6; bucha>= 0; bucha --) {
+			for(int indiceJogador = 0; indiceJogador < jogadores.size(); indiceJogador++) {
+				Participante p = jogadores.get(indiceJogador);
+				
+				for (Peca peca : p.getMao()) {
+					if (peca.getLado1() == bucha && peca.getLado2() == bucha) {
+						System.out.println(p.getNome() + " que tem a peça ["+peca.getLado1()+"-"+peca.getLado2()+"] começa.");
+						mesa.jogarPeca(peca,  'E');
+						p.getMao().remove(peca);
+						System.out.println(peca+" jogada na mesa!");
+						return (indiceJogador+1) % jogadores.size();
+					}
+				}
+			}
+		}
+		System.out.println("Ninguém tem a bucha, o jogador 1 começa!");
+		return 0;
 	}
 }

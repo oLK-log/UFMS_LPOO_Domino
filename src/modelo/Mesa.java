@@ -17,7 +17,7 @@ public class Mesa {
 		return pontaEsquerda;
 	}
 	public int getPontaDireita() {
-		return pontaEsquerda;
+		return pontaDireita;
 	}
 	//methods
 	public boolean estaVazia() {
@@ -36,6 +36,35 @@ public class Mesa {
 			pontaDireita = p.getLado2();
 			return true;
 		}
+		
+		if (lado == 'E' || lado == 'e') {
+            if (p.getLado2() == pontaEsquerda) {
+                pontaEsquerda = p.getLado1();
+                pecasNaMesa.add(0, p);
+                return true;
+            } 
+            else if (p.getLado1() == pontaEsquerda) {
+                pontaEsquerda = p.getLado2();
+                pecasNaMesa.add(0, new Peca(p.getLado2(), p.getLado1())); 
+                return true;
+            }
+        }
+        
+        if (lado == 'D' || lado == 'd') {
+            if (p.getLado1() == pontaDireita) {
+                pontaDireita = p.getLado2();
+                pecasNaMesa.add(p);
+                return true;
+            } 
+
+            else if (p.getLado2() == pontaDireita) {
+                pontaDireita = p.getLado1();
+                pecasNaMesa.add(new Peca(p.getLado2(), p.getLado1()));
+                return true;
+            }
+        }
+		
+		/*
 		if(lado == 'E' || lado == 'e') {
 			//E/e == esquerdo
 			if(p.getLado1() == pontaEsquerda) {
@@ -60,8 +89,12 @@ public class Mesa {
 				return true;
 			}
 		}
+		
+		*/
 		return false;
 	}
+	
+	
 	@Override
 	public String toString() {
 		if(estaVazia()) {
