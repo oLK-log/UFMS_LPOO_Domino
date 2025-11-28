@@ -1,6 +1,8 @@
 package modelo;
 
+//ORDENACAO USANDO COMPARABLE!! - em Peca implementamos Comparable para usar o Colections Sort para ordenar as peças
 public class Peca implements Comparable<Peca> {
+	//Prof, aqui usamos encapsulamento
 	private int lado1;
 	private int lado2;
 	
@@ -10,6 +12,7 @@ public class Peca implements Comparable<Peca> {
 	}
 	
 	//gets
+	//aqui também faz parte do encapsulamento
 	public int getLado1() {
 		return lado1;
 	}
@@ -34,3 +37,5 @@ public class Peca implements Comparable<Peca> {
 		//<0 se menor, =0 se igual e >0 se maior
 	}
 }
+
+

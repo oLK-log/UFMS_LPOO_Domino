@@ -2,6 +2,7 @@ package modelo;
 import java.util.Scanner;
 import excecoes.JogadaInvalidaException;
 
+//HERANÇA!! Humano vai herdar de PArticipante(recebendo os atributos nome e mao e tendo que implementar os metodos)
 public class Humano extends Participante{
 	private static Scanner input = new Scanner(System.in);
 	
@@ -15,6 +16,8 @@ public class Humano extends Participante{
 		return null;
 	}
 	
+	
+	//POLIMORFISMO!!! implementa o metodo para o Humano( é polimorfico pq poderia ser implementado para o bot)
 	@Override
 	public void jogarPeca(Mesa mesa, Peca peca) throws JogadaInvalidaException {
 		if(!mao.contains(peca)) {
@@ -27,7 +30,10 @@ public class Humano extends Participante{
 		if(funcionou) {
 			mao.remove(peca);
 		}else {
+			//TRATAMENTO DE ERRO!!! - instanciamos a classe que herda de Exception para erros do JOgo
 			throw new JogadaInvalidaException(" A peca "+peca+"nao encaixa no lado "+ lado+"!!!");
 		}
 	}
 }
+
+

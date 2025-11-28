@@ -30,6 +30,7 @@ public class ControleJogo {
         System.out.println("                                 Jogadores Criados!                               ");
         
         //criando pecas
+        //teoricamente utilizamos Coleções(em add, lista...)
         for(int i=0; i<=6; i++) {
             for(int j=i; j<=6; j++) {
                 monte.add(new Peca(i,j));
@@ -93,6 +94,7 @@ public class ControleJogo {
 				if(indicePeca >= 0 && indicePeca < jogadorAtual.getMao().size()) {
 					Peca pecaEscolhida = jogadorAtual.getMao().get(indicePeca);
 					try {
+						//Polimorfismo(usei o met jogarPeca)
 						jogadorAtual.jogarPeca(mesa, pecaEscolhida);
 						System.out.println("Jogada Feita!");
 						
@@ -102,9 +104,12 @@ public class ControleJogo {
 						} else {
 							indiceJogadorAtual = (indiceJogadorAtual + 1) % jogadores.size();
 						}
+						//TRATAMENTO DE ERROS!!1 
 					} catch(JogadaInvalidaException e) {
+						//capturas de erros específicos
 						System.out.println("Jogada Inválida - "+ e.getMessage());
 					} catch(Exception e) {
+						//captura de erros genéricos
 						System.out.println("Erro: "+ e.getMessage());
 					}
 				}
@@ -181,3 +186,4 @@ public class ControleJogo {
 		return 0;
 	}
 }
+
