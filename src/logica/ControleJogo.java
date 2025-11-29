@@ -1,5 +1,6 @@
 package logica;
 import java.util.Scanner;
+import java.util.function.Function;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,8 +26,13 @@ public class ControleJogo {
         System.out.println("----------------------------------------------------------------------------------");
         
         //criando jogadores
-        jogadores.add(new Humano("Jogador 1"));
-        jogadores.add(new Humano("Jogador 2"));
+        System.out.print("Nome do Jogador 1:");
+        String nome1 = lerNome();
+        jogadores.add(new Humano(nome1));
+        System.out.print("Nome do Jogador 2:");
+        String nome2 = lerNome();
+        jogadores.add(new Humano(nome2));
+        
         System.out.println("                                 Jogadores Criados!                               ");
         
         //criando pecas
@@ -59,7 +65,7 @@ public class ControleJogo {
 	public void iniciarPartida() {
 		//Partida
 		System.out.println("---------------------------------Iniciando partida!-------------------------------");
-		//a partida vai iniciar pelo jogador 1
+		//a partida vai iniciar pelo jogador com a bucha
 		boolean jogoAcabou = false;
 		int indiceJogadorAtual = definePrimeiraJogada();
 		
@@ -155,7 +161,9 @@ public class ControleJogo {
 		System.out.println("[3] - Passar a vez");
 	}
 	
-	private int lerOpcao() {
+	//aqui da para implementar um metodo genérica
+	//ideia: receber qualquer valor(String ou int)
+	/*private int lerOpcao() {
 		while(true) {
 			try {
 				String linha = input.nextLine();
@@ -164,6 +172,24 @@ public class ControleJogo {
 				System.out.println("Entrada inválida! Digite um valor numérico:");
 			}
 		}
+	}*/ 
+	//Esse metodo vai poder ser usando tanto para ler o opcao(int), quanto para ler o nome do usuario
+	private <T> T lerGenerico(String mensagemErro, Function<String, T> conversor){
+		while(true) {
+			try {
+				String linha = input.nextLine();
+				return conversor.apply(linha);
+			} catch(Exception e) {
+				System.out.println(mensagemErro+"Digite um valor Numérico!");
+			}
+		}
+	}
+	//usando o método generico para ler a opcao e o nome do jogador
+	private int lerOpcao() {
+		return lerGenerico("Entrada inválida! Digite um valor numérico...", Integer::parseInt);
+	}
+	private String lerNome() {
+		return lerGenerico("Erro na leitura!", str -> str);
 	}
 	
 	private int definePrimeiraJogada() {
