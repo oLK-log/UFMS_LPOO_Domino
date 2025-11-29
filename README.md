@@ -1,5 +1,5 @@
 # <p align="center">  UFMS_LPOO_Domino  <br/> </p>
-## Trabalho final da matéria 'Linguagem de Programação Orientada a Objetos' do curso de Engenharia de Software da UFMS com ibjetivo de implementação em Linguagem Java dos conteúdos aprendidos durante o 2°semestre de 2025 na matéria.
+## Trabalho final da matéria 'Linguagem de Programação Orientada a Objetos' do curso de Engenharia de Software da UFMS com objetivo de implementação em Linguagem Java dos conteúdos apreendidos durante o 2°semestre de 2025 na matéria.
 
 <p align="center">
 
